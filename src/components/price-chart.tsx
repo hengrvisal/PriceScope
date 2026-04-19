@@ -43,7 +43,7 @@ export function PriceChart({ listings }: { listings: Listing[] }) {
   if (data.length === 0) return <p className="text-sm text-gray-500">No price data.</p>;
   return (
     <div className="h-72 w-full">
-      <ResponsiveContainer>
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <BarChart data={data} margin={{ top: 8, right: 8, bottom: 24, left: 8 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="range" tick={{ fontSize: 10 }} angle={-20} textAnchor="end" />
