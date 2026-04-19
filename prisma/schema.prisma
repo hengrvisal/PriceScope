@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  BUSINESS
+}
+
+enum ScanStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+enum Marketplace {
+  EBAY_AU
+  FACEBOOK
+  GUMTREE
+  AMAZON_AU
+}
+
+enum MatchType {
+  EXACT
+  CLOSE
+  RELATED
+  UNRELATED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  plan         Plan     @default(FREE)
+  createdAt    DateTime @default(now())
+  scans        Scan[]
+}
+
+model Scan {
+  id           String      @id @default(cuid())
+  userId       String?
+  user         User?       @relation(fields: [userId], references: [id])
+  query        String
+  category     String?
+  location     String?
+  userPrice    Int?
+  marketplaces Marketplace[]
+  status       ScanStatus  @default(PENDING)
+  errorMessage String?
+  createdAt    DateTime    @default(now())
+  completedAt  DateTime?
+  listings     Listing[]
+  report       ScanReport?
+
+  @@index([userId, createdAt])
+}
+
+model Listing {
+  id              String      @id @default(cuid())
+  scanId          String
+  scan            Scan        @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  marketplace     Marketplace
+  title           String
+  price           Int
+  currency        String      @default("AUD")
+  condition       String?
+  sellerName      String?
+  location        String?
+  listingUrl      String
+  imageUrl        String?
+  matchType       MatchType   @default(UNRELATED)
+  matchConfidence Float       @default(0)
+  rawData         Json
+  extractedAt     DateTime    @default(now())
+
+  @@index([scanId, matchConfidence])
+}
+
+model ScanReport {
+  id                 String   @id @default(cuid())
+  scanId             String   @unique
+  scan               Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  avgPrice           Int
+  medianPrice        Int
+  minPrice           Int
+  maxPrice           Int
+  totalListings      Int
+  platformBreakdown  Json
+  pricePosition      Float?
+  recommendation     Json?
+  createdAt          DateTime @default(now())
+}
