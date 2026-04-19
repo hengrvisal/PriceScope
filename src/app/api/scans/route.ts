@@ -31,10 +31,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const marketplaces = parsed.data.marketplaces ?? [
-    Marketplace.EBAY_AU,
-    Marketplace.GUMTREE,
-  ];
+  const marketplaces = parsed.data.marketplaces ?? [Marketplace.EBAY_AU];
 
   const scan = await prisma.scan.create({
     data: {

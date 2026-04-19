@@ -14,7 +14,7 @@ const GOAL_BUILDERS = {
 
 const QUERY = "laptop 16gb ram";
 const LOCATION = "melbourne";
-const MARKETPLACES: Array<keyof typeof GOAL_BUILDERS> = ["EBAY_AU", "GUMTREE"];
+const MARKETPLACES: Array<keyof typeof GOAL_BUILDERS> = ["EBAY_AU"];
 
 async function main() {
   console.log(`\n=== test-scan: "${QUERY}" in ${LOCATION} ===\n`);
