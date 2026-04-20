@@ -6,15 +6,17 @@ import { computePriceStats } from "../src/lib/analysis/price-stats";
 
 import * as ebay from "../src/lib/tinyfish/goals/ebay";
 import * as gumtree from "../src/lib/tinyfish/goals/gumtree";
+import * as amazon from "../src/lib/tinyfish/goals/amazon";
 
 const GOAL_BUILDERS = {
   EBAY_AU: ebay,
   GUMTREE: gumtree,
+  AMAZON_AU: amazon,
 } as const;
 
-const QUERY = "laptop 16gb ram";
+const QUERY = "sony wh-1000xm5";
 const LOCATION = "melbourne";
-const MARKETPLACES: Array<keyof typeof GOAL_BUILDERS> = ["EBAY_AU"];
+const MARKETPLACES: Array<keyof typeof GOAL_BUILDERS> = ["EBAY_AU", "AMAZON_AU"];
 
 async function main() {
   console.log(`\n=== test-scan: "${QUERY}" in ${LOCATION} ===\n`);

@@ -10,11 +10,10 @@ export function buildGoal(query: string, _category?: string, _location?: string)
   return `Search Amazon Australia for "${query}". Extract the first 15 product results shown on the search results page. For each product, extract:
 - title: product title (string)
 - price: numeric price in AUD, no currency symbol (number)
-- rating: average star rating 0-5 (number, null if not shown)
-- reviewCount: total number of reviews (number, null if not shown)
-- primeEligible: true if Prime badge shown, false otherwise (boolean)
+- condition: "New" if shown, otherwise null (Amazon typically shows "New")
+- isPrime: true if Prime badge shown, false otherwise (boolean)
 - url: full absolute product URL
 
 Return ONLY a JSON array with this exact shape, no prose:
-[{"title": string, "price": number, "rating": number|null, "reviewCount": number|null, "primeEligible": boolean, "url": string}]`;
+[{"title": string, "price": number, "condition": string|null, "isPrime": boolean, "url": string}]`;
 }

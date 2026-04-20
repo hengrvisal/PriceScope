@@ -28,9 +28,8 @@ const facebookSchema = z.object({
 const amazonSchema = z.object({
   title: z.string(),
   price: z.number().nullable(),
-  rating: z.number().nullable().optional(),
-  reviewCount: z.number().nullable().optional(),
-  primeEligible: z.boolean().optional(),
+  condition: z.string().nullable().optional(),
+  isPrime: z.boolean().optional(),
   url: z.string(),
 });
 

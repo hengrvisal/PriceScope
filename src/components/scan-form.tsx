@@ -19,7 +19,7 @@ export function ScanForm() {
     try {
       const body: Record<string, unknown> = {
         query: query.trim(),
-        marketplaces: ["EBAY_AU"],
+        marketplaces: ["EBAY_AU", "AMAZON_AU"],
       };
       if (category.trim()) body.category = category.trim();
       if (location.trim()) body.location = location.trim();
