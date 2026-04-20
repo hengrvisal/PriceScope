@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { formatCents } from "@/lib/format";
+import { formatCents, MARKETPLACE_LABEL } from "@/lib/format";
 
 type Listing = {
   id: string;
@@ -16,13 +16,6 @@ type Listing = {
 
 type SortField = "price" | "confidence";
 type SortDir = "asc" | "desc";
-
-const MARKETPLACE_LABEL: Record<string, string> = {
-  EBAY_AU: "eBay AU",
-  GUMTREE: "Gumtree",
-  FACEBOOK: "Facebook",
-  AMAZON_AU: "Amazon AU",
-};
 
 const MATCH_TYPE_TONE: Record<string, string> = {
   EXACT: "bg-emerald-100 text-emerald-800",

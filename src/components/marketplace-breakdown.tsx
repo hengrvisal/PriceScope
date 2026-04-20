@@ -1,4 +1,4 @@
-import { formatCents } from "@/lib/format";
+import { formatCents, marketplaceLabel } from "@/lib/format";
 
 type PlatformStats = {
   count: number;
@@ -29,7 +29,7 @@ export function MarketplaceBreakdown({
       <tbody>
         {rows.map(([marketplace, s]) => (
           <tr key={marketplace} className="border-b">
-            <td className="py-2">{marketplace}</td>
+            <td className="py-2">{marketplaceLabel(marketplace)}</td>
             <td className="py-2 text-right">{s.count}</td>
             <td className="py-2 text-right">{formatCents(s.avgPrice)}</td>
             <td className="py-2 text-right">{formatCents(s.minPrice)}</td>
