@@ -12,6 +12,10 @@ const schema = z.object({
   NEXTAUTH_SECRET: z.string().min(1),
   NEXTAUTH_URL: z.string().url().optional(),
   RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM_EMAIL: z.string().optional(),
+  CRON_SECRET: z.string().optional(),
+  WATCHLIST_UNSUBSCRIBE_SECRET: z.string().optional(),
+  APP_URL: z.string().url().optional(),
 });
 
 const parsed = schema.safeParse(process.env);

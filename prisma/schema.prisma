@@ -36,20 +36,31 @@ enum MatchType {
   UNRELATED
 }
 
+enum WatchlistFrequency {
+  WEEKLY
+}
+
+enum AlertType {
+  MEDIAN_SHIFT
+}
+
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String      @id @default(cuid())
+  email        String      @unique
   name         String?
   passwordHash String
-  plan         Plan     @default(FREE)
-  createdAt    DateTime @default(now())
+  plan         Plan        @default(FREE)
+  createdAt    DateTime    @default(now())
   scans        Scan[]
+  watchlists   Watchlist[]
 }
 
 model Scan {
   id           String      @id @default(cuid())
   userId       String?
   user         User?       @relation(fields: [userId], references: [id])
+  watchlistId  String?
+  watchlist    Watchlist?  @relation(fields: [watchlistId], references: [id], onDelete: SetNull)
   query        String
   category     String?
   location     String?
@@ -61,8 +72,10 @@ model Scan {
   completedAt  DateTime?
   listings     Listing[]
   report       ScanReport?
+  alerts       Alert[]
 
   @@index([userId, createdAt])
+  @@index([watchlistId, createdAt])
 }
 
 model Listing {
@@ -99,4 +112,38 @@ model ScanReport {
   pricePosition      Float?
   recommendation     Json?
   createdAt          DateTime @default(now())
+}
+
+model Watchlist {
+  id           String             @id @default(cuid())
+  userId       String
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  query        String
+  location     String?
+  userPrice    Int?
+  marketplaces Marketplace[]
+  frequency    WatchlistFrequency @default(WEEKLY)
+  active       Boolean            @default(true)
+  lastRunAt    DateTime?
+  nextRunAt    DateTime
+  createdAt    DateTime           @default(now())
+  scans        Scan[]
+  alerts       Alert[]
+
+  @@index([active, nextRunAt])
+  @@index([userId, createdAt])
+}
+
+model Alert {
+  id          String    @id @default(cuid())
+  watchlistId String
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+  scanId      String
+  scan        Scan      @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  alertType   AlertType @default(MEDIAN_SHIFT)
+  message     String
+  sentAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([watchlistId, createdAt])
 }
