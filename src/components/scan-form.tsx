@@ -9,6 +9,7 @@ export function ScanForm() {
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [userPriceDollars, setUserPriceDollars] = useState("");
+  const [includeFacebook, setIncludeFacebook] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,9 +18,11 @@ export function ScanForm() {
     setError(null);
     setSubmitting(true);
     try {
+      const marketplaces = ["EBAY_AU", "AMAZON_AU"];
+      if (includeFacebook) marketplaces.push("FACEBOOK");
       const body: Record<string, unknown> = {
         query: query.trim(),
-        marketplaces: ["EBAY_AU", "AMAZON_AU"],
+        marketplaces,
       };
       if (category.trim()) body.category = category.trim();
       if (location.trim()) body.location = location.trim();
@@ -87,6 +90,20 @@ export function ScanForm() {
           className="w-full border rounded px-3 py-2"
         />
       </div>
+      <label className="flex items-start gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={includeFacebook}
+          onChange={(e) => setIncludeFacebook(e.target.checked)}
+          className="mt-0.5"
+        />
+        <span>
+          Also search Facebook Marketplace
+          <span className="block text-xs text-gray-500">
+            Slower and may be blocked by anti-bot measures — results can be sparse.
+          </span>
+        </span>
+      </label>
       {error && <p className="text-sm text-red-600">{error}</p>}
       <button
         type="submit"

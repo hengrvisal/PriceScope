@@ -22,6 +22,7 @@ const facebookSchema = z.object({
   title: z.string(),
   price: z.number().nullable(),
   location: z.string().nullable().optional(),
+  listingAge: z.string().nullable().optional(),
   url: z.string(),
 });
 

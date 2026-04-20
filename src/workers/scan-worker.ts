@@ -45,7 +45,7 @@ async function extractOne(
     return { marketplace, listings, durationMs: Date.now() - startedAt };
   } catch (err) {
     if (err instanceof TinyFishAgentFailedError) {
-      console.error(`[tinyfish] agent reported failure: ${err.reason} — ${err.details}`);
+      console.error(`[worker] ${marketplace} agent reported failure: ${err.reason} — ${err.details}`);
     }
     const msg = err instanceof TinyFishError ? err.message : (err as Error).message;
     console.error(`[worker] ${marketplace} failed (first try): ${msg}`);
@@ -58,7 +58,7 @@ async function extractOne(
       return { marketplace, listings, durationMs: Date.now() - startedAt };
     } catch (err2) {
       if (err2 instanceof TinyFishAgentFailedError) {
-        console.error(`[tinyfish] agent reported failure: ${err2.reason} — ${err2.details}`);
+        console.error(`[worker] ${marketplace} agent reported failure (retry): ${err2.reason} — ${err2.details}`);
       }
       const msg2 = err2 instanceof TinyFishError ? err2.message : (err2 as Error).message;
       console.error(`[worker] ${marketplace} failed (retry): ${msg2}`);
