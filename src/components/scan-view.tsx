@@ -125,7 +125,7 @@ export function ScanView({ scanId }: { scanId: string }) {
           </section>
           <section>
             <h2 className="text-lg font-medium mb-2">Price distribution</h2>
-            <PriceChart listings={data.listings} />
+            <PriceChart listings={data.listings} userPrice={data.userPrice ?? undefined} />
           </section>
           <section>
             <h2 className="text-lg font-medium mb-2">By marketplace</h2>
