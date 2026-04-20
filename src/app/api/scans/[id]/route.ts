@@ -42,6 +42,7 @@ export async function GET(
     location: scan.location,
     userPrice: scan.userPrice,
     marketplaces: scan.marketplaces,
+    watchlistId: scan.watchlistId,
     createdAt: scan.createdAt,
     completedAt: scan.completedAt,
     report: scan.report,

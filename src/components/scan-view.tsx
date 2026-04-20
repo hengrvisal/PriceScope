@@ -6,6 +6,7 @@ import { PriceReport } from "./price-report";
 import { PriceChart } from "./price-chart";
 import { MarketplaceBreakdown } from "./marketplace-breakdown";
 import { CompetitorTable } from "./competitor-table";
+import { SaveAsWatchlist } from "./save-as-watchlist";
 import { formatCents } from "@/lib/format";
 
 type ScanResponse =
@@ -18,6 +19,8 @@ type ScanResponse =
       query: string;
       location: string | null;
       userPrice: number | null;
+      marketplaces: string[];
+      watchlistId: string | null;
       createdAt: string;
       completedAt: string;
       report: {
@@ -98,12 +101,23 @@ export function ScanView({ scanId }: { scanId: string }) {
 
   return (
     <div className="space-y-8">
-      <header>
-        <h1 className="text-2xl font-semibold">{data.query}</h1>
-        <p className="text-sm text-gray-500">
-          {data.location ? `${data.location} · ` : ""}
-          completed {new Date(data.completedAt).toLocaleString()}
-        </p>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold">{data.query}</h1>
+          <p className="text-sm text-gray-500">
+            {data.location ? `${data.location} · ` : ""}
+            completed {new Date(data.completedAt).toLocaleString()}
+          </p>
+        </div>
+        {data.watchlistId === null && (
+          <SaveAsWatchlist
+            scanId={data.scanId}
+            query={data.query}
+            location={data.location}
+            userPrice={data.userPrice}
+            marketplaces={data.marketplaces}
+          />
+        )}
       </header>
 
       {data.report ? (
