@@ -5,6 +5,7 @@ import { PriceReport } from "./price-report";
 import { PriceChart } from "./price-chart";
 import { MarketplaceBreakdown } from "./marketplace-breakdown";
 import { CompetitorTable } from "./competitor-table";
+import { formatCents } from "@/lib/format";
 
 type ScanResponse =
   | { status: "PENDING"; scanId: string; errorMessage?: string | null }
@@ -15,6 +16,7 @@ type ScanResponse =
       scanId: string;
       query: string;
       location: string | null;
+      userPrice: number | null;
       createdAt: string;
       completedAt: string;
       report: {
@@ -41,6 +43,13 @@ type ScanResponse =
         matchConfidence: number;
       }>;
     };
+
+function heroToneFor(percentile: number): string {
+  if (percentile < 0.25) return "border-amber-300 bg-amber-50 text-amber-900";
+  if (percentile < 0.5) return "border-emerald-300 bg-emerald-50 text-emerald-900";
+  if (percentile < 0.75) return "border-blue-300 bg-blue-50 text-blue-900";
+  return "border-red-300 bg-red-50 text-red-900";
+}
 
 export function ScanView({ scanId }: { scanId: string }) {
   const { data, error } = useQuery<ScanResponse>({
@@ -91,6 +100,26 @@ export function ScanView({ scanId }: { scanId: string }) {
 
       {data.report ? (
         <>
+          {data.userPrice !== null && data.report.pricePosition !== null && (
+            <section
+              className={`border rounded-lg p-5 ${heroToneFor(data.report.pricePosition)}`}
+            >
+              <div className="text-xs uppercase tracking-wide opacity-70">
+                Your price position
+              </div>
+              <div className="text-xl font-semibold mt-1">
+                {data.report.recommendation?.message ??
+                  `${Math.round(data.report.pricePosition * 100)}th percentile`}
+              </div>
+              <div className="text-sm mt-2 opacity-80">
+                Your price {formatCents(data.userPrice)} ·{" "}
+                {Math.round(data.report.pricePosition * 100)}th percentile of{" "}
+                {data.report.totalListings} comparable listings · median{" "}
+                {formatCents(data.report.medianPrice)}
+              </div>
+            </section>
+          )}
+
           <section>
             <PriceReport report={data.report} />
           </section>
