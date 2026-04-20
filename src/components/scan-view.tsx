@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { PriceReport } from "./price-report";
 import { PriceChart } from "./price-chart";
@@ -79,11 +80,18 @@ export function ScanView({ scanId }: { scanId: string }) {
 
   if (data.status === "FAILED") {
     return (
-      <div className="border border-red-300 bg-red-50 rounded p-4">
-        <div className="font-medium text-red-800">Scan failed</div>
-        {data.errorMessage && (
-          <div className="text-sm text-red-700 mt-1">{data.errorMessage}</div>
-        )}
+      <div className="border border-red-300 bg-red-50 rounded-lg p-5">
+        <div className="text-base font-semibold text-red-900">Scan failed</div>
+        <p className="text-sm text-red-800 mt-2">
+          {data.errorMessage ??
+            "We couldn't retrieve listings from any of the selected marketplaces."}
+        </p>
+        <Link
+          href="/dashboard"
+          className="inline-block mt-4 text-sm font-medium text-red-900 hover:underline"
+        >
+          Try another scan →
+        </Link>
       </div>
     );
   }
@@ -133,7 +141,23 @@ export function ScanView({ scanId }: { scanId: string }) {
           </section>
         </>
       ) : (
-        <p className="text-sm text-gray-500">No report generated.</p>
+        <section className="border border-gray-200 bg-gray-50 rounded-lg p-5">
+          <div className="text-base font-semibold text-gray-900">
+            No comparable listings found
+          </div>
+          <p className="text-sm text-gray-700 mt-2">
+            We extracted {data.listings.length} listing
+            {data.listings.length === 1 ? "" : "s"}, but none matched
+            &quot;{data.query}&quot; closely enough to benchmark. Try a more
+            specific query or different marketplaces.
+          </p>
+          <Link
+            href="/dashboard"
+            className="inline-block mt-4 text-sm font-medium text-blue-700 hover:underline"
+          >
+            Run another scan →
+          </Link>
+        </section>
       )}
 
       <section>
