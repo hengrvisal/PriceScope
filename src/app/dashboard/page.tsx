@@ -1,17 +1,30 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { ScanForm } from "@/components/scan-form";
+import { SignOutButton } from "@/components/sign-out-button";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const scans = await prisma.scan.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 10,
-  });
+  const session = await auth();
+  const scans = session?.user?.id
+    ? await prisma.scan.findMany({
+        where: { userId: session.user.id },
+        orderBy: { createdAt: "desc" },
+        take: 10,
+      })
+    : [];
 
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-10">
+      <header className="flex items-center justify-between">
+        <span className="text-sm text-gray-600">
+          {session?.user?.email}
+        </span>
+        <SignOutButton />
+      </header>
+
       <section>
         <h1 className="text-2xl font-semibold mb-4">New scan</h1>
         <ScanForm />

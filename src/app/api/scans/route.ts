@@ -3,6 +3,7 @@ import { z } from "zod";
 import { Marketplace } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { scanQueue } from "@/lib/queue";
+import { auth } from "@/lib/auth";
 
 const createScanSchema = z.object({
   query: z.string().min(1).max(200),
@@ -16,6 +17,11 @@ const createScanSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -35,6 +41,7 @@ export async function POST(req: NextRequest) {
 
   const scan = await prisma.scan.create({
     data: {
+      userId: session.user.id,
       query: parsed.data.query,
       category: parsed.data.category,
       location: parsed.data.location,
@@ -59,13 +66,21 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const sp = req.nextUrl.searchParams;
   const page = Math.max(1, parseInt(sp.get("page") ?? "1", 10));
   const limit = Math.min(50, Math.max(1, parseInt(sp.get("limit") ?? "10", 10)));
 
+  const where = { userId: session.user.id };
+
   const [total, scans] = await Promise.all([
-    prisma.scan.count(),
+    prisma.scan.count({ where }),
     prisma.scan.findMany({
+      where,
       orderBy: { createdAt: "desc" },
       skip: (page - 1) * limit,
       take: limit,
