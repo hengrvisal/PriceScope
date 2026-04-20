@@ -9,7 +9,7 @@ const schema = z.object({
   TINYFISH_API_KEY: z.string().min(1),
   ANTHROPIC_API_KEY: z.string().min(1),
   REDIS_URL: z.string().url().optional(),
-  NEXTAUTH_SECRET: z.string().min(1).optional(),
+  NEXTAUTH_SECRET: z.string().min(1),
   NEXTAUTH_URL: z.string().url().optional(),
   RESEND_API_KEY: z.string().optional(),
 });
