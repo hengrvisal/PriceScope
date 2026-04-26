@@ -1,5 +1,7 @@
 import { prisma } from "../db";
 import { sendAlertEmail } from "../email/resend";
+import { buildUnsubscribeUrl } from "../watchlist-token";
+import { env } from "../env";
 
 export const MEDIAN_SHIFT_THRESHOLD = 0.05;
 
@@ -102,12 +104,17 @@ export async function recordAlertIfShifted(
 
   let emailSent = false;
   if (watchlist?.user?.email) {
+    let unsubscribeUrl = options?.unsubscribeUrl;
+    if (!unsubscribeUrl && env.WATCHLIST_UNSUBSCRIBE_SECRET) {
+      const appUrl = env.APP_URL ?? "http://localhost:3000";
+      unsubscribeUrl = buildUnsubscribeUrl(watchlistId, appUrl);
+    }
     const result = await sendAlertEmail({
       to: watchlist.user.email,
       query: watchlist.query,
       message: evaluation.message,
       scanId,
-      unsubscribeUrl: options?.unsubscribeUrl,
+      unsubscribeUrl,
     });
     if (result.sent) {
       emailSent = true;
