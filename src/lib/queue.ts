@@ -10,6 +10,7 @@ export type ScanJobData = {
   userPrice?: number;
   marketplaces: Marketplace[];
   userId?: string;
+  watchlistId?: string;
 };
 
 export const SCAN_QUEUE = "scan-queue";

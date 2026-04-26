@@ -7,6 +7,7 @@ import { runTinyFishAutomation, TinyFishError, TinyFishAgentFailedError } from "
 import { parseListings, type NormalizedListing } from "../lib/tinyfish/parser";
 import { matchListings, type MatchedListing } from "../lib/matching/product-matcher";
 import { computePriceStats } from "../lib/analysis/price-stats";
+import { recordAlertIfShifted } from "../lib/alerts/evaluate";
 
 import * as ebay from "../lib/tinyfish/goals/ebay";
 import * as gumtree from "../lib/tinyfish/goals/gumtree";
@@ -73,7 +74,7 @@ async function extractOne(
 }
 
 export async function runScanPipeline(data: ScanJobData): Promise<void> {
-  const { scanId, query, category, location, userPrice, marketplaces } = data;
+  const { scanId, query, category, location, userPrice, marketplaces, watchlistId } = data;
   const overallStart = Date.now();
 
   console.log(`[worker] scan ${scanId} starting: "${query}" across ${marketplaces.join(",")}`);
@@ -176,6 +177,23 @@ export async function runScanPipeline(data: ScanJobData): Promise<void> {
   console.log(
     `[worker] scan ${scanId} COMPLETED in ${Date.now() - overallStart}ms (${matchedWithMarket.length} listings, ${stats.count} in report)`
   );
+
+  if (watchlistId && stats.count > 0) {
+    try {
+      const { created, evaluation } = await recordAlertIfShifted(watchlistId, scanId);
+      if (created && evaluation.kind === "shift") {
+        console.log(
+          `[worker] alert created for watchlist ${watchlistId}: ${evaluation.message}`
+        );
+      } else {
+        console.log(
+          `[worker] no alert for watchlist ${watchlistId}: ${evaluation.kind}`
+        );
+      }
+    } catch (err) {
+      console.error(`[worker] alert evaluation failed for watchlist ${watchlistId}:`, err);
+    }
+  }
 }
 
 export function startScanWorker(): Worker<ScanJobData> {
