@@ -1,418 +1,522 @@
-import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { Nav } from "@/components/landing/nav";
+import { PriceTicker } from "@/components/landing/price-ticker";
+import { CtaButton } from "@/components/landing/cta-button";
+import { FeatureCard } from "@/components/landing/feature-card";
+import { tok, SYNE } from "@/components/landing/tokens";
 
 export default async function LandingPage() {
   const session = await auth();
-  const signedIn = Boolean(session?.user?.id);
-  const primaryHref = signedIn ? "/dashboard" : "/signup";
+  const isSignedIn = Boolean(session?.user?.id);
+  const primaryHref = isSignedIn ? "/dashboard" : "/signup";
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="font-bold tracking-tight text-gray-900">
-            PriceScope
-          </Link>
-          <nav className="flex items-center gap-3 text-sm">
-            {signedIn ? (
-              <Link
-                href="/dashboard"
-                className="px-3 py-1.5 rounded bg-blue-600 text-white hover:bg-blue-700"
-              >
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link href="/signin" className="text-gray-600 hover:text-gray-900">
-                  Sign in
-                </Link>
-                <Link
-                  href="/signup"
-                  className="px-3 py-1.5 rounded bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Sign up
-                </Link>
-              </>
-            )}
-          </nav>
-        </div>
-      </header>
+    <div style={{ background: tok.bg, minHeight: "100vh" }}>
+      <Nav isSignedIn={isSignedIn} />
 
-      <section className="max-w-6xl mx-auto px-6 py-20 sm:py-24">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">
+      {/* Hero */}
+      <section
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "120px 40px 80px",
+          position: "relative",
+          overflow: "hidden",
+          background: tok.bg,
+        }}
+      >
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
+          <div
+            style={{
+              position: "absolute",
+              top: "-10%",
+              left: "-5%",
+              width: 700,
+              height: 700,
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${tok.accent}18 0%, transparent 65%)`,
+              filter: "blur(60px)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "20%",
+              right: "-10%",
+              width: 600,
+              height: 600,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, oklch(0.65 0.18 260 / 0.12) 0%, transparent 65%)",
+              filter: "blur(80px)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "-5%",
+              left: "30%",
+              width: 500,
+              height: 400,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, oklch(0.70 0.16 230 / 0.10) 0%, transparent 65%)",
+              filter: "blur(70px)",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "20%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 600,
+            height: 400,
+            borderRadius: "50%",
+            background: `radial-gradient(ellipse, ${tok.accent}18 0%, transparent 70%)`,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+        />
+
+        <div
+          style={{
+            maxWidth: 1160,
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 60,
+            position: "relative",
+            zIndex: 1,
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ flex: "1 1 520px", maxWidth: 560 }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "6px 14px",
+                borderRadius: 100,
+                border: `1px solid ${tok.accent}44`,
+                background: `${tok.accent}10`,
+                marginBottom: 32,
+              }}
+            >
+              <div
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: tok.accent,
+                  boxShadow: `0 0 6px ${tok.accent}`,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: tok.accent,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Cross-marketplace price intelligence
+              </span>
+            </div>
+
+            <h1
+              style={{
+                fontFamily: SYNE,
+                fontSize: "clamp(36px, 5vw, 62px)",
+                fontWeight: 800,
+                lineHeight: 1.08,
+                letterSpacing: "-0.03em",
+                color: tok.text,
+                textWrap: "pretty",
+                marginBottom: 24,
+              }}
+            >
               Know what your product is selling for, everywhere.
             </h1>
-            <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-              PriceScope scans eBay, Amazon, Catch, and Facebook Marketplace at
-              once and shows you exactly where your price sits in the market.
+
+            <p
+              style={{
+                fontSize: 18,
+                lineHeight: 1.65,
+                color: tok.textMuted,
+                maxWidth: 460,
+                marginBottom: 40,
+              }}
+            >
+              PriceScope scans eBay, Amazon, Catch, and Facebook Marketplace at once and shows
+              you exactly where your price sits in the market. Stop guessing. Start pricing
+              right.
             </p>
-            <p className="mt-2 text-lg text-gray-600 leading-relaxed">
-              Stop guessing. Start pricing right.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href={primaryHref}
-                className="inline-flex items-center px-5 py-3 rounded bg-blue-600 text-white font-medium hover:bg-blue-700"
-              >
-                Start your first scan
-              </Link>
-              <a
-                href="#how-it-works"
-                className="text-sm text-gray-700 hover:text-gray-900 hover:underline"
-              >
-                How it works →
-              </a>
+
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center" }}>
+              <CtaButton href={primaryHref} label="Start your first scan →" variant="hero" />
+              <span style={{ fontSize: 13, color: tok.textMuted }}>No credit card required</span>
+            </div>
+
+            <div style={{ display: "flex", gap: 32, marginTop: 52, flexWrap: "wrap" }}>
+              {[
+                ["4", "Marketplaces scanned in parallel"],
+                ["~3 min", "Average scan time"],
+                ["100%", "Read-only — never logs into your accounts"],
+              ].map(([n, l]) => (
+                <div key={l} style={{ maxWidth: 200 }}>
+                  <div
+                    style={{
+                      fontFamily: SYNE,
+                      fontSize: 26,
+                      fontWeight: 800,
+                      color: tok.text,
+                      letterSpacing: "-0.03em",
+                    }}
+                  >
+                    {n}
+                  </div>
+                  <div style={{ fontSize: 13, color: tok.textMuted, marginTop: 2 }}>{l}</div>
+                </div>
+              ))}
             </div>
           </div>
-          <HeroChartMock />
-        </div>
-      </section>
 
-      <section id="how-it-works" className="border-t border-gray-200 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6 py-20 sm:py-24">
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-            Three steps.
-          </h2>
-          <div className="mt-12 grid md:grid-cols-3 gap-8">
-            <Step
-              icon={<TagIcon />}
-              title="Tell us what you're selling"
-              body="Type the product name. Optionally add your current asking price so we can show you where it sits."
-            />
-            <Step
-              icon={<RadarIcon />}
-              title="We check the market"
-              body="Agents scan eBay, Amazon, Catch, and Facebook Marketplace in parallel. Usually finishes in under three minutes."
-            />
-            <Step
-              icon={<ChartIcon />}
-              title="You get a clear answer"
-              body="A short report: median price, where you rank, and the actual listings other sellers are running right now."
-            />
+          <div style={{ flex: "0 0 auto", display: "flex", justifyContent: "center" }}>
+            <PriceTicker />
           </div>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-20 sm:py-24">
-        <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-          A real answer in under three minutes.
-        </h2>
-        <div className="mt-12 grid md:grid-cols-2 gap-12 items-start">
-          <ReportMock />
-          <div className="space-y-8">
-            <Benefit
-              icon={<RankIcon />}
-              title="See where your price ranks"
-              body="A percentile-based read on whether you're priced low, fair, or high — with a one-line recommendation."
-            />
-            <Benefit
-              icon={<MarketIcon />}
-              title="Compare across four marketplaces"
-              body="eBay AU, Amazon AU, Catch, and Facebook Marketplace, all in one view. No more flipping between tabs."
-            />
-            <Benefit
-              icon={<BellIcon />}
-              title="Get notified when the market moves"
-              body="Save a scan as a watchlist and get a weekly email if the median price shifts more than 5%."
-            />
+      {/* Features */}
+      <section id="features" style={{ padding: "100px 40px", background: tok.bgMid }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div
+              style={{
+                fontFamily: SYNE,
+                fontSize: 12,
+                fontWeight: 700,
+                color: tok.accent,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                marginBottom: 16,
+              }}
+            >
+              Features
+            </div>
+            <h2
+              style={{
+                fontFamily: SYNE,
+                fontSize: "clamp(28px, 4vw, 46px)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                color: tok.text,
+                lineHeight: 1.1,
+              }}
+            >
+              Everything you need to price with confidence
+            </h2>
           </div>
-        </div>
-      </section>
 
-      <section className="border-t border-gray-200 bg-gray-50">
-        <div className="max-w-3xl mx-auto px-6 py-20 sm:py-24">
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-            Built for sellers who care about pricing right.
-          </h2>
-          <p className="mt-6 text-lg text-gray-700 leading-relaxed">
-            PriceScope is read-only. We never log into your marketplace
-            accounts and never post or change anything on your behalf. We just
-            read the public listing pages — the same ones a buyer would see —
-            and turn them into market data you can use.
-          </p>
-          <p className="mt-4 text-lg text-gray-700 leading-relaxed">
-            Smart matching filters out listings that aren&apos;t actually your
-            product, so the numbers you see reflect real comparables — not
-            random noise from the search results.
-          </p>
-        </div>
-      </section>
-
-      <section className="max-w-6xl mx-auto px-6 py-20 sm:py-24 text-center">
-        <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-          Find out what your listing is worth.
-        </h2>
-        <div className="mt-8 flex flex-col items-center gap-3">
-          <Link
-            href={primaryHref}
-            className="inline-flex items-center px-6 py-3 rounded bg-blue-600 text-white font-medium hover:bg-blue-700"
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: 20,
+            }}
           >
-            Start your first scan
-          </Link>
-          <p className="text-sm text-gray-500">Free to try. No credit card.</p>
+            <FeatureCard
+              icon={
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.8" />
+                  <path
+                    d="M7 11h8M11 7v8"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              }
+              title="Cross-marketplace scanning"
+              desc="We scan eBay, Amazon, Catch, and Facebook Marketplace in parallel. You see the full picture of your product's market in one report."
+            />
+            <FeatureCard
+              icon={
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect
+                    x="2"
+                    y="13"
+                    width="4"
+                    height="7"
+                    rx="1"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  />
+                  <rect
+                    x="9"
+                    y="8"
+                    width="4"
+                    height="12"
+                    rx="1"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  />
+                  <rect
+                    x="16"
+                    y="3"
+                    width="4"
+                    height="17"
+                    rx="1"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  />
+                </svg>
+              }
+              title="Smart matching"
+              desc="Not every search result is actually your product. PriceScope filters out unrelated listings automatically, so you compare like for like."
+            />
+            <FeatureCard
+              icon={
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <polyline
+                    points="3,17 8,10 13,13 19,5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="19" cy="5" r="2" fill="currentColor" />
+                </svg>
+              }
+              title="Where you sit in the market"
+              desc="Get a clear percentile-based read on your price. Are you priced competitively, leaving money on the table, or above market? PriceScope tells you in plain language."
+            />
+            <FeatureCard
+              icon={
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.8" />
+                  <path
+                    d="M11 7v4l3 2"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              }
+              title="Watchlists with weekly alerts"
+              desc="Save a search and get an email when the market median moves more than 5% in either direction. You'll know when to relist or re-price without checking every day."
+            />
+          </div>
         </div>
       </section>
 
-      <footer className="border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="font-bold tracking-tight text-gray-900">PriceScope</span>
-          <span className="text-xs text-gray-500">
-            © {new Date().getFullYear()} PriceScope
+      {/* How it works */}
+      <section id="how" style={{ padding: "100px 40px", background: tok.bg }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 72 }}>
+            <div
+              style={{
+                fontFamily: SYNE,
+                fontSize: 12,
+                fontWeight: 700,
+                color: tok.accent,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                marginBottom: 16,
+              }}
+            >
+              How it works
+            </div>
+            <h2
+              style={{
+                fontFamily: SYNE,
+                fontSize: "clamp(28px, 4vw, 46px)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                color: tok.text,
+                lineHeight: 1.1,
+              }}
+            >
+              From product to perfect price
+              <br />
+              in three steps
+            </h2>
+          </div>
+
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                position: "absolute",
+                top: 36,
+                left: "calc(16.5% + 0px)",
+                right: "calc(16.5%)",
+                height: 1,
+                background: `linear-gradient(90deg, ${tok.accent}55, ${tok.accent}22, ${tok.accent}55)`,
+                zIndex: 0,
+              }}
+            />
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: 32,
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
+              {[
+                {
+                  n: "01",
+                  title: "Tell us what you're selling",
+                  body: "Type the product name. Optionally add the price you're thinking. That's it — no account info, no listing details, no logins.",
+                },
+                {
+                  n: "02",
+                  title: "We scan four marketplaces in parallel",
+                  body: "PriceScope fires automated browsers at eBay, Amazon, Catch, and Facebook Marketplace. Smart matching filters listings that aren't actually your product. All in about three minutes.",
+                },
+                {
+                  n: "03",
+                  title: "Get your answer",
+                  body: "See where your price ranks. Median, percentile, distribution chart, and a table of comparable listings with links. Save it as a watchlist to track over time.",
+                },
+              ].map((s) => (
+                <div key={s.n} style={{ textAlign: "center", padding: "0 24px" }}>
+                  <div
+                    style={{
+                      width: 72,
+                      height: 72,
+                      borderRadius: "50%",
+                      margin: "0 auto 28px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: tok.bgCard,
+                      border: `2px solid ${tok.accent}`,
+                      boxShadow: `0 0 0 6px ${tok.accent}14, 0 16px 40px rgba(0,0,0,0.3)`,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: SYNE,
+                        fontSize: 18,
+                        fontWeight: 800,
+                        color: tok.accent,
+                      }}
+                    >
+                      {s.n}
+                    </span>
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: SYNE,
+                      fontSize: 20,
+                      fontWeight: 700,
+                      color: tok.text,
+                      marginBottom: 14,
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {s.title}
+                  </h3>
+                  <p style={{ fontSize: 15, color: tok.textMuted, lineHeight: 1.65 }}>{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section style={{ padding: "80px 40px", background: tok.bgMid }}>
+        <div
+          style={{
+            maxWidth: 760,
+            margin: "0 auto",
+            textAlign: "center",
+            padding: "64px 48px",
+            borderRadius: 24,
+            background: tok.bgCard,
+            border: `1px solid ${tok.border}`,
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              width: 500,
+              height: 300,
+              borderRadius: "50%",
+              background: `radial-gradient(ellipse, ${tok.accent}12 0%, transparent 70%)`,
+              pointerEvents: "none",
+            }}
+          />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <h2
+              style={{
+                fontFamily: SYNE,
+                fontSize: "clamp(24px, 3.5vw, 40px)",
+                fontWeight: 800,
+                color: tok.text,
+                letterSpacing: "-0.03em",
+                marginBottom: 16,
+              }}
+            >
+              Find out what your listing is worth.
+            </h2>
+            <p style={{ fontSize: 17, color: tok.textMuted, marginBottom: 36 }}>
+              Free to try. No credit card. Three minutes from signup to your first report.
+            </p>
+            <CtaButton
+              href={primaryHref}
+              label="Start your first scan — it's free →"
+              variant="banner"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer
+        style={{
+          padding: "32px 40px",
+          background: tok.bg,
+          borderTop: `1px solid ${tok.border}`,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1160,
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
+          <span
+            style={{ fontFamily: SYNE, fontWeight: 800, fontSize: 16, color: tok.textMuted }}
+          >
+            PriceScope
+          </span>
+          <span style={{ fontSize: 13, color: tok.textMuted }}>
+            © 2026 PriceScope. Know what your product is selling for, everywhere.
           </span>
         </div>
       </footer>
     </div>
-  );
-}
-
-function Step({
-  icon,
-  title,
-  body,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div>
-      <div className="w-10 h-10 rounded bg-blue-50 text-blue-600 flex items-center justify-center">
-        {icon}
-      </div>
-      <h3 className="mt-4 text-lg font-medium text-gray-900">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600 leading-relaxed">{body}</p>
-    </div>
-  );
-}
-
-function Benefit({
-  icon,
-  title,
-  body,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-}) {
-  return (
-    <div className="flex gap-4">
-      <div className="shrink-0 w-9 h-9 rounded bg-blue-50 text-blue-600 flex items-center justify-center">
-        {icon}
-      </div>
-      <div>
-        <h3 className="text-base font-medium text-gray-900">{title}</h3>
-        <p className="mt-1 text-sm text-gray-600 leading-relaxed">{body}</p>
-      </div>
-    </div>
-  );
-}
-
-function HeroChartMock() {
-  const bars = [12, 22, 36, 58, 78, 92, 86, 70, 50, 32, 20, 14];
-  const userIdx = 7;
-  return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between text-xs text-gray-500">
-        <span>Price distribution · 28 listings</span>
-        <span className="text-blue-600 font-medium">Your price</span>
-      </div>
-      <svg viewBox="0 0 320 140" className="mt-4 w-full h-36">
-        {bars.map((h, i) => {
-          const x = 8 + i * 25;
-          const barH = h;
-          const y = 120 - barH;
-          const isUser = i === userIdx;
-          return (
-            <rect
-              key={i}
-              x={x}
-              y={y}
-              width={18}
-              height={barH}
-              rx={2}
-              className={isUser ? "fill-blue-600" : "fill-gray-200"}
-            />
-          );
-        })}
-        <line
-          x1={8 + userIdx * 25 + 9}
-          x2={8 + userIdx * 25 + 9}
-          y1={4}
-          y2={132}
-          className="stroke-blue-600"
-          strokeWidth={1}
-          strokeDasharray="3 3"
-        />
-        <line x1={0} x2={320} y1={120} y2={120} className="stroke-gray-300" strokeWidth={1} />
-      </svg>
-      <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-        <MiniStat label="Median" value="$349" />
-        <MiniStat label="Your rank" value="62nd" accent />
-        <MiniStat label="Listings" value="28" />
-      </div>
-    </div>
-  );
-}
-
-function ReportMock() {
-  const bars = [10, 18, 30, 48, 72, 88, 80, 64, 44, 28, 16, 10];
-  return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm space-y-6">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <ReportTile label="Median" value="$349" />
-        <ReportTile label="Mean" value="$362" />
-        <ReportTile label="Listings" value="28" />
-        <ReportTile label="Marketplaces" value="3" />
-      </div>
-      <div>
-        <div className="text-xs text-gray-500 mb-2">Price distribution</div>
-        <svg viewBox="0 0 320 90" className="w-full h-20">
-          {bars.map((h, i) => {
-            const x = 8 + i * 25;
-            const y = 80 - h;
-            return (
-              <rect
-                key={i}
-                x={x}
-                y={y}
-                width={18}
-                height={h}
-                rx={2}
-                className="fill-gray-200"
-              />
-            );
-          })}
-          <line
-            x1={8 + 6 * 25 + 9}
-            x2={8 + 6 * 25 + 9}
-            y1={4}
-            y2={88}
-            className="stroke-blue-600"
-            strokeWidth={1}
-            strokeDasharray="3 3"
-          />
-        </svg>
-      </div>
-      <div>
-        <div className="text-xs text-gray-500 mb-2">Recent listings</div>
-        <div className="border border-gray-200 rounded divide-y text-sm">
-          <ListingRow market="eBay AU" title="Sony WH-1000XM5 Black" price="$359" />
-          <ListingRow market="Amazon AU" title="Sony WH-1000XM5 Wireless" price="$379" />
-          <ListingRow market="Catch" title="Sony WH1000XM5 Headphones" price="$329" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ReportTile({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded border border-gray-200 px-3 py-2">
-      <div className="text-xs text-gray-500">{label}</div>
-      <div className="mt-0.5 text-base font-semibold text-gray-900">{value}</div>
-    </div>
-  );
-}
-
-function MiniStat({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: boolean;
-}) {
-  return (
-    <div className="rounded border border-gray-200 py-2">
-      <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
-      <div
-        className={`mt-0.5 text-sm font-semibold ${accent ? "text-blue-600" : "text-gray-900"}`}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function ListingRow({
-  market,
-  title,
-  price,
-}: {
-  market: string;
-  title: string;
-  price: string;
-}) {
-  return (
-    <div className="px-3 py-2 flex items-center justify-between gap-3">
-      <div className="min-w-0 flex-1">
-        <div className="text-[11px] uppercase tracking-wide text-gray-500">{market}</div>
-        <div className="truncate text-gray-800">{title}</div>
-      </div>
-      <div className="font-medium text-gray-900">{price}</div>
-    </div>
-  );
-}
-
-function TagIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-      <circle cx="7" cy="7" r="1.5" />
-    </svg>
-  );
-}
-
-function RadarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <circle cx="12" cy="12" r="9" />
-      <circle cx="12" cy="12" r="5" />
-      <circle cx="12" cy="12" r="1.5" />
-      <path d="M12 12 18 6" />
-    </svg>
-  );
-}
-
-function ChartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <path d="M3 3v18h18" />
-      <rect x="7" y="12" width="3" height="6" />
-      <rect x="12" y="8" width="3" height="10" />
-      <rect x="17" y="5" width="3" height="13" />
-    </svg>
-  );
-}
-
-function RankIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function MarketIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <rect x="3" y="4" width="8" height="8" rx="1" />
-      <rect x="13" y="4" width="8" height="4" rx="1" />
-      <rect x="13" y="10" width="8" height="10" rx="1" />
-      <rect x="3" y="14" width="8" height="6" rx="1" />
-    </svg>
-  );
-}
-
-function BellIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-      <path d="M10 21a2 2 0 0 0 4 0" />
-    </svg>
   );
 }
