@@ -19,9 +19,17 @@ export default async function DashboardPage() {
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-10">
       <header className="flex items-center justify-between">
-        <span className="text-sm text-gray-600">
-          {session?.user?.email}
-        </span>
+        <nav className="flex items-center gap-4 text-sm">
+          <span className="font-medium text-gray-900">Scans</span>
+          <Link
+            href="/dashboard/watchlists"
+            className="text-gray-600 hover:text-gray-900"
+          >
+            Watchlists
+          </Link>
+          <span className="text-gray-400">·</span>
+          <span className="text-gray-600">{session?.user?.email}</span>
+        </nav>
         <SignOutButton />
       </header>
 

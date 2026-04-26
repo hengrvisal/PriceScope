@@ -14,6 +14,27 @@ const createWatchlistSchema = z.object({
   seedScanId: z.string().optional(),
 });
 
+export async function GET() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const watchlists = await prisma.watchlist.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: "desc" },
+    include: {
+      scans: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        select: { id: true, status: true, createdAt: true },
+      },
+    },
+  });
+
+  return NextResponse.json({ watchlists });
+}
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
