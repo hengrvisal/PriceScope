@@ -30,7 +30,7 @@ export function Nav({ isSignedIn }: Props) {
         alignItems: "center",
         justifyContent: "space-between",
         height: 64,
-        background: scrolled ? "rgba(12,12,13,0.92)" : "transparent",
+        background: scrolled ? "rgba(247,245,242,0.92)" : "transparent",
         backdropFilter: scrolled ? "blur(16px)" : "none",
         borderBottom: scrolled ? `1px solid ${tok.border}` : "1px solid transparent",
         transition: "background 0.3s, border-color 0.3s",

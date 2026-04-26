@@ -49,8 +49,8 @@ export default async function LandingPage() {
               height: 600,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, oklch(0.65 0.18 260 / 0.12) 0%, transparent 65%)",
-              filter: "blur(80px)",
+                "radial-gradient(circle, oklch(0.65 0.18 260 / 0.05) 0%, transparent 65%)",
+              filter: "blur(100px)",
             }}
           />
           <div
@@ -62,8 +62,8 @@ export default async function LandingPage() {
               height: 400,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, oklch(0.70 0.16 230 / 0.10) 0%, transparent 65%)",
-              filter: "blur(70px)",
+                "radial-gradient(circle, oklch(0.70 0.16 230 / 0.05) 0%, transparent 65%)",
+              filter: "blur(90px)",
             }}
           />
         </div>
@@ -358,7 +358,7 @@ export default async function LandingPage() {
                 left: "calc(16.5% + 0px)",
                 right: "calc(16.5%)",
                 height: 1,
-                background: `linear-gradient(90deg, ${tok.accent}55, ${tok.accent}22, ${tok.accent}55)`,
+                background: `linear-gradient(90deg, ${tok.accent}80, ${tok.accent}40, ${tok.accent}80)`,
                 zIndex: 0,
               }}
             />
@@ -401,7 +401,7 @@ export default async function LandingPage() {
                       justifyContent: "center",
                       background: tok.bgCard,
                       border: `2px solid ${tok.accent}`,
-                      boxShadow: `0 0 0 6px ${tok.accent}14, 0 16px 40px rgba(0,0,0,0.3)`,
+                      boxShadow: `0 0 0 6px ${tok.accent}14, 0 12px 32px rgba(0,0,0,0.06)`,
                     }}
                   >
                     <span
@@ -459,7 +459,7 @@ export default async function LandingPage() {
               width: 500,
               height: 300,
               borderRadius: "50%",
-              background: `radial-gradient(ellipse, ${tok.accent}12 0%, transparent 70%)`,
+              background: `radial-gradient(ellipse, ${tok.accent}08 0%, transparent 70%)`,
               pointerEvents: "none",
             }}
           />

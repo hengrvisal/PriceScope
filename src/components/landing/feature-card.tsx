@@ -23,7 +23,7 @@ export function FeatureCard({ icon, title, desc }: Props) {
       onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = tok.accent + "55";
         e.currentTarget.style.transform = "translateY(-3px)";
-        e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.3)";
+        e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.08)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = tok.border;

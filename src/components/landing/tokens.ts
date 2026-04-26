@@ -1,11 +1,11 @@
 export const tok = {
   accent: "#2563eb",
-  bg: "#0c0c0d",
-  bgCard: "#141415",
-  bgMid: "#111112",
-  border: "rgba(255,255,255,0.07)",
-  text: "#f0ede8",
-  textMuted: "#7a7870",
+  bg: "#f7f5f2",
+  bgCard: "#ffffff",
+  bgMid: "#eeebe6",
+  border: "rgba(0,0,0,0.08)",
+  text: "#111112",
+  textMuted: "#8a8680",
 } as const;
 
 export const SYNE = "var(--font-syne), sans-serif";

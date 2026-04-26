@@ -28,8 +28,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body
         style={{
           fontFamily: "var(--font-dm-sans), sans-serif",
-          background: "#0c0c0d",
-          color: "#f0ede8",
+          background: "#f7f5f2",
+          color: "#111112",
           WebkitFontSmoothing: "antialiased",
           overflowX: "hidden",
           margin: 0,

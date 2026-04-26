@@ -25,7 +25,7 @@ export function PriceTicker() {
         borderRadius: 20,
         padding: "28px 32px",
         width: 340,
-        boxShadow: `0 32px 80px rgba(0,0,0,0.4), 0 0 0 1px ${tok.border}`,
+        boxShadow: `0 24px 60px rgba(0,0,0,0.08), 0 0 0 1px ${tok.border}`,
         position: "relative",
         overflow: "hidden",
       }}
