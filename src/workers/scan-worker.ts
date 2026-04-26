@@ -180,10 +180,10 @@ export async function runScanPipeline(data: ScanJobData): Promise<void> {
 
   if (watchlistId && stats.count > 0) {
     try {
-      const { created, evaluation } = await recordAlertIfShifted(watchlistId, scanId);
+      const { created, emailSent, evaluation } = await recordAlertIfShifted(watchlistId, scanId);
       if (created && evaluation.kind === "shift") {
         console.log(
-          `[worker] alert created for watchlist ${watchlistId}: ${evaluation.message}`
+          `[worker] alert created for watchlist ${watchlistId}: ${evaluation.message} (email ${emailSent ? "sent" : "skipped"})`
         );
       } else {
         console.log(

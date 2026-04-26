@@ -1,4 +1,5 @@
 import { prisma } from "../db";
+import { sendAlertEmail } from "../email/resend";
 
 export const MEDIAN_SHIFT_THRESHOLD = 0.05;
 
@@ -76,15 +77,16 @@ export async function evaluateWatchlistAlert(
 
 export async function recordAlertIfShifted(
   watchlistId: string,
-  scanId: string
-): Promise<{ created: boolean; evaluation: AlertEvaluation }> {
+  scanId: string,
+  options?: { unsubscribeUrl?: string }
+): Promise<{ created: boolean; emailSent: boolean; evaluation: AlertEvaluation }> {
   const evaluation = await evaluateWatchlistAlert(watchlistId, scanId);
 
   if (evaluation.kind !== "shift") {
-    return { created: false, evaluation };
+    return { created: false, emailSent: false, evaluation };
   }
 
-  await prisma.alert.create({
+  const alert = await prisma.alert.create({
     data: {
       watchlistId,
       scanId,
@@ -93,5 +95,30 @@ export async function recordAlertIfShifted(
     },
   });
 
-  return { created: true, evaluation };
+  const watchlist = await prisma.watchlist.findUnique({
+    where: { id: watchlistId },
+    select: { query: true, user: { select: { email: true } } },
+  });
+
+  let emailSent = false;
+  if (watchlist?.user?.email) {
+    const result = await sendAlertEmail({
+      to: watchlist.user.email,
+      query: watchlist.query,
+      message: evaluation.message,
+      scanId,
+      unsubscribeUrl: options?.unsubscribeUrl,
+    });
+    if (result.sent) {
+      emailSent = true;
+      await prisma.alert.update({
+        where: { id: alert.id },
+        data: { sentAt: new Date() },
+      });
+    } else {
+      console.error(`[alerts] email send failed for alert ${alert.id}: ${result.reason}`);
+    }
+  }
+
+  return { created: true, emailSent, evaluation };
 }
