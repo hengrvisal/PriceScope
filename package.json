@@ -9,6 +9,7 @@
     "lint": "next lint",
     "worker": "ts-node workers/start.ts",
     "test:scan": "ts-node scripts/test-scan.ts",
+    "test:watchlist": "ts-node scripts/test-watchlist.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },
