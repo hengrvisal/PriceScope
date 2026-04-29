@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: { serverComponentsExternalPackages: ["@prisma/client", "ioredis", "bullmq"] },
+  serverExternalPackages: ["@prisma/client", "ioredis", "bullmq"],
+  turbopack: {
+    root: __dirname,
+  },
 };
 module.exports = nextConfig;
